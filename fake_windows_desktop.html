@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 10</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body { font-family: "Segoe UI", "Microsoft YaHei UI", sans-serif; overflow: hidden; background: #000; }
+        
+        /* Windows 10 Desktop Background */
+        .desktop {
+            width: 100vw; height: 100vh;
+            background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80') center/cover no-repeat;
+            position: relative;
+        }
+        .desktop::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(0,20,40,0.25) 0%, rgba(0,40,80,0.15) 50%, rgba(0,20,40,0.25) 100%);
+            pointer-events: none;
+        }
+        
+        /* Desktop Icons */
+        .desktop-icons { padding: 12px 10px; display: grid; grid-template-columns: repeat(1, 86px); grid-auto-rows: 98px; gap: 2px; position: absolute; top: 10px; left: 10px; }
+        .desktop-icon { width: 86px; height: 98px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 8px 4px; border-radius: 3px; cursor: pointer; transition: background 0.08s; }
+        .desktop-icon:hover { background: rgba(255, 255, 255, 0.15); }
+        .desktop-icon:active { background: rgba(255, 255, 255, 0.1); }
+        .desktop-icon .icon-wrapper { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .desktop-icon span { color: white; font-size: 11px; text-align: center; margin-top: 6px; text-shadow: 1px 1px 3px rgba(0,0,0,0.9); word-wrap: break-word; max-width: 78px; line-height: 1.35; }
+        
+        /* Real Windows 10 Style Icons */
+        .icon-recycle-bin { 
+            width: 48px; height: 48px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><linearGradient id="rbg" x1="0%25" y1="0%25" x2="0%25" y2="100%25"><stop offset="0%25" style="stop-color:%2385c88a"/><stop offset="50%25" style="stop-color:%2360a865"/><stop offset="100%25" style="stop-color:%234a9050"/></linearGradient></defs><path d="M12 8h24v4H12z" fill="%235a9a5a"/><path d="M10 12h28c1.1 0 2 .9 2 2v24c0 2.2-1.8 4-4 4H12c-2.2 0-4-1.8-4-4V14c0-1.1.9-2 2-2z" fill="url(%23rbg)"/><path d="M18 6h12v4H18z" fill="%235a9a5a"/><rect x="16" y="18" width="4" height="16" rx="1" fill="%234a804a" opacity="0.5"/><rect x="22" y="18" width="4" height="16" rx="1" fill="%234a804a" opacity="0.5"/><rect x="28" y="18" width="4" height="16" rx="1" fill="%234a804a" opacity="0.5"/></svg>') center/contain no-repeat;
+        }
+        .icon-this-pc { 
+            width: 48px; height: 48px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><linearGradient id="pcg" x1="0%25" y1="0%25" x2="0%25" y2="100%25"><stop offset="0%25" style="stop-color:%2358a0e8"/><stop offset="100%25" style="stop-color:%233d8ad8"/></linearGradient></defs><rect x="2" y="4" width="44" height="30" rx="2" fill="%232a2a2a"/><rect x="4" y="6" width="40" height="24" fill="%23101c38"/><rect x="18" y="34" width="12" height="3" fill="%23585858"/><rect x="12" y="37" width="24" height="3" rx="1" fill="%23484848"/><circle cx="24" cy="18" r="6" fill="%2358a0e8" opacity="0.3"/></svg>') center/contain no-repeat;
+        }
+        .icon-powerpoint { 
+            width: 48px; height: 48px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><linearGradient id="pptg" x1="0%25" y1="0%25" x2="0%25" y2="100%25"><stop offset="0%25" style="stop-color:%23d24726"/><stop offset="100%25" style="stop-color:%23c43e1d"/></linearGradient></defs><rect x="4" y="4" width="40" height="40" rx="4" fill="url(%23pptg)"/><rect x="10" y="10" width="28" height="28" fill="white" rx="2"/><text x="24" y="30" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold" fill="%23d24726">P</text></svg>') center/contain no-repeat;
+        }
+        .icon-edge { 
+            width: 48px; height: 48px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><linearGradient id="edgeg" x1="0%25" y1="0%25" x2="100%25" y2="100%25"><stop offset="0%25" style="stop-color:%230078d4"/><stop offset="100%25" style="stop-color:%2300a2ed"/></linearGradient></defs><circle cx="24" cy="24" r="20" fill="url(%23edgeg)"/><path d="M14 28c0-6 4-10 10-10 3 0 5 1 7 2-2-2-5-4-9-4-8 0-13 6-11 14 0 0 2-5 8-5 5 0 6 3 11 3 2 0 3-1 4-2" fill="white" opacity="0.9"/></svg>') center/contain no-repeat;
+        }
+        
+        /* Taskbar */
+        .taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 48px; background: rgba(32, 32, 32, 0.85); display: flex; align-items: center; backdrop-filter: blur(30px) saturate(125%); border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .start-button { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .start-button:hover { background: rgba(255, 255, 255, 0.1); }
+        .start-button svg { width: 18px; height: 18px; fill: white; }
+        .search-box { display: flex; align-items: center; height: 32px; width: 240px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 2px; margin-left: 8px; padding: 0 10px; cursor: text; }
+        .search-box:hover { background: rgba(255, 255, 255, 0.12); }
+        .search-box svg { width: 16px; height: 16px; fill: rgba(255, 255, 255, 0.6); margin-right: 10px; }
+        .search-box span { color: rgba(255, 255, 255, 0.5); font-size: 13px; }
+        .task-view-btn { width: 44px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: 4px; }
+        .task-view-btn:hover { background: rgba(255, 255, 255, 0.1); }
+        .task-view-btn svg { width: 18px; height: 18px; fill: rgba(255, 255, 255, 0.7); }
+        .taskbar-apps { display: flex; height: 100%; margin-left: 12px; }
+        .taskbar-app { width: 44px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+        .taskbar-app:hover { background: rgba(255, 255, 255, 0.1); }
+        .taskbar-app.active { background: rgba(255, 255, 255, 0.08); }
+        .taskbar-app.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 3px; background: #d24726; }
+        .taskbar-app.running::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 6px; height: 3px; background: rgba(255, 255, 255, 0.6); }
+        .taskbar-app svg { width: 22px; height: 22px; fill: white; }
+        .taskbar-right { margin-left: auto; display: flex; align-items: center; height: 100%; }
+        .systray-icons { display: flex; align-items: center; padding: 0 8px; height: 100%; gap: 2px; }
+        .systray-icon { width: 24px; height: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .systray-icon:hover { background: rgba(255, 255, 255, 0.1); }
+        .systray-icon svg { width: 16px; height: 16px; fill: white; opacity: 0.9; }
+        .datetime { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; padding: 0 14px; height: 100%; cursor: pointer; min-width: 80px; }
+        .datetime:hover { background: rgba(255, 255, 255, 0.1); }
+        .datetime-time { color: white; font-size: 12px; }
+        .datetime-date { color: white; font-size: 12px; }
+        .notification-btn { width: 6px; height: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .notification-btn:hover { background: rgba(255, 255, 255, 0.1); }
+        .notification-btn::after { content: ''; width: 1px; height: 24px; background: rgba(255, 255, 255, 0.2); }
+        
+        /* PowerPoint Window */
+        .ppt-window { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 1100px; height: 720px; background: #f3f3f3; border-radius: 6px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.1); display: none; flex-direction: column; overflow: hidden; z-index: 100; }
+        .ppt-window.show { display: flex; animation: windowOpen 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes windowOpen { from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        
+        /* Title Bar */
+        .ppt-titlebar { height: 32px; background: linear-gradient(180deg, #d24726 0%, #c43e1d 100%); display: flex; align-items: center; padding: 0; }
+        .ppt-quick-access { display: flex; align-items: center; padding-left: 8px; gap: 2px; }
+        .quick-access-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 2px; cursor: pointer; }
+        .quick-access-btn:hover { background: rgba(255, 255, 255, 0.15); }
+        .quick-access-btn svg { width: 14px; height: 14px; fill: white; opacity: 0.9; }
+        .ppt-titlebar-center { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .ppt-titlebar-center svg { width: 16px; height: 16px; fill: white; }
+        .ppt-titlebar-center span { color: white; font-size: 12px; opacity: 0.95; }
+        .ppt-titlebar-buttons { display: flex; }
+        .titlebar-btn { width: 46px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .titlebar-btn:hover { background: rgba(255, 255, 255, 0.1); }
+        .titlebar-btn.close:hover { background: #e81123; }
+        .titlebar-btn svg { width: 10px; height: 10px; fill: white; }
+        
+        /* Ribbon */
+        .ppt-ribbon { background: #f3f3f3; }
+        .ribbon-tabs { display: flex; padding: 0 8px; background: linear-gradient(180deg, #d24726 0%, #c43e1d 100%); height: 27px; }
+        .ribbon-tab { padding: 5px 12px; color: white; font-size: 12px; cursor: pointer; opacity: 0.9; border-radius: 2px 2px 0 0; }
+        .ribbon-tab:hover { background: rgba(255, 255, 255, 0.1); }
+        .ribbon-tab.active { background: #f3f3f3; color: #444; opacity: 1; }
+        .ribbon-tab.file { background: rgba(255, 255, 255, 0.1); opacity: 1; }
+        .ribbon-content { padding: 6px 12px 8px; display: flex; align-items: flex-start; gap: 12px; min-height: 88px; background: #f8f8f8; border-bottom: 1px solid #e1e1e1; }
+        .ribbon-group { display: flex; flex-direction: column; align-items: center; }
+        .ribbon-group-label { font-size: 10px; color: #767676; margin-top: 4px; }
+        .ribbon-divider { width: 1px; height: 62px; background: #d4d4d4; margin: 0 4px; }
+        .ribbon-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 8px; min-width: 44px; cursor: pointer; border-radius: 2px; }
+        .ribbon-btn:hover { background: rgba(0, 0, 0, 0.05); }
+        .ribbon-btn svg { width: 16px; height: 16px; fill: #444; }
+        .ribbon-btn-large { padding: 4px 12px; }
+        .ribbon-btn-large svg { width: 28px; height: 28px; }
+        
+        /* Main Content Area */
+        .ppt-main { display: flex; flex: 1; overflow: hidden; }
+        
+        /* Left Panel - Slide Thumbnails */
+        .slide-panel { width: 180px; background: #f8f8f8; border-right: 1px solid #e1e1e1; display: flex; flex-direction: column; overflow: hidden; }
+        .slide-panel-header { padding: 8px 12px; font-size: 12px; color: #444; border-bottom: 1px solid #e1e1e1; background: #f0f0f0; }
+        .slide-list { flex: 1; overflow-y: auto; padding: 8px; }
+        .slide-thumb { width: 100%; aspect-ratio: 16/9; background: white; margin-bottom: 8px; border: 2px solid transparent; border-radius: 2px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; transition: border-color 0.15s; }
+        .slide-thumb:hover { border-color: #ccc; }
+        .slide-thumb.active { border-color: #d24726; }
+        .slide-thumb-content { width: 100%; height: 100%; display: flex; flex-direction: column; padding: 4px; font-size: 6px; }
+        .slide-thumb-title { font-weight: bold; color: #333; font-size: 5px; margin-bottom: 2px; }
+        .slide-thumb-text { color: #666; font-size: 4px; line-height: 1.3; }
+        .slide-thumb-image { width: 100%; height: 40%; background: #e8e8e8; margin-top: 4px; }
+        
+        /* Editor Area */
+        .editor-area { flex: 1; display: flex; flex-direction: column; background: #e8e8e8; overflow: hidden; }
+        .slide-editor { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; overflow: auto; }
+        
+        /* Slide Canvas */
+        .slide-canvas { width: 960px; height: 540px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.15); position: relative; overflow: hidden; }
+        
+        /* Slide Content Styles */
+        .slide-content { width: 100%; height: 100%; padding: 40px 60px; display: flex; flex-direction: column; }
+        .slide-title { font-size: 36px; font-weight: bold; color: #d24726; margin-bottom: 20px; font-family: "Microsoft YaHei", sans-serif; }
+        .slide-body { flex: 1; display: flex; gap: 40px; }
+        .slide-text { flex: 1; font-size: 18px; line-height: 1.8; color: #333; font-family: "Microsoft YaHei", sans-serif; }
+        .slide-image { width: 320px; height: 100%; background: #f5f5f5; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .slide-image img { width: 100%; height: 100%; object-fit: cover; }
+        .slide-image-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #999; }
+        .slide-image-placeholder svg { width: 48px; height: 48px; fill: #ccc; margin-bottom: 8px; }
+        
+        /* Typing cursor */
+        .typing-cursor { display: inline-block; width: 3px; height: 24px; background: #d24726; animation: blink 0.6s steps(1) infinite; vertical-align: text-bottom; margin-left: 2px; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        
+        /* Status Bar */
+        .ppt-statusbar { height: 22px; background: #f3f3f3; border-top: 1px solid #d4d4d4; display: flex; align-items: center; padding: 0 12px; font-size: 11px; color: #444; }
+        .status-section { display: flex; align-items: center; gap: 16px; }
+        .status-item { cursor: pointer; padding: 0 4px; }
+        .status-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+        .slide-indicator { display: flex; align-items: center; gap: 8px; }
+        .slide-nav-btn { padding: 2px 6px; cursor: pointer; border-radius: 2px; }
+        .slide-nav-btn:hover { background: rgba(0,0,0,0.05); }
+        .zoom-control { display: flex; align-items: center; gap: 4px; }
+        .zoom-control span { font-size: 11px; }
+        
+        /* Slide transitions */
+        .slide-canvas.transition { animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        
+        /* Image loading animation */
+        .image-loading { animation: imgLoad 0.3s ease-out; }
+        @keyframes imgLoad { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <div class="desktop">
+        <div class="desktop-icons">
+            <div class="desktop-icon" ondblclick="openPPT()"><div class="icon-wrapper"><div class="icon-recycle-bin"></div></div><span>回收站</span></div>
+            <div class="desktop-icon"><div class="icon-wrapper"><div class="icon-this-pc"></div></div><span>此电脑</span></div>
+            <div class="desktop-icon" ondblclick="openPPT()"><div class="icon-wrapper"><div class="icon-powerpoint"></div></div><span>Microsoft PowerPoint</span></div>
+            <div class="desktop-icon"><div class="icon-wrapper"><div class="icon-edge"></div></div><span>Microsoft Edge</span></div>
+        </div>
+
+        <div class="ppt-window" id="pptWindow">
+            <div class="ppt-titlebar">
+                <div class="ppt-quick-access">
+                    <div class="quick-access-btn" title="自动保存"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+                    <div class="quick-access-btn" title="保存"><svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg></div>
+                    <div class="quick-access-btn" title="撤销"><svg viewBox="0 0 24 24"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg></div>
+                    <div class="quick-access-btn" title="重做"><svg viewBox="0 0 24 24"><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg></div>
+                </div>
+                <div class="ppt-titlebar-center">
+                    <svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20"/></svg>
+                    <span>百度原生全模态大模型文心5.0介绍.pptx - PowerPoint</span>
+                </div>
+                <div class="ppt-titlebar-buttons">
+                    <div class="titlebar-btn" title="最小化"><svg viewBox="0 0 10 10"><path d="M0 5h10v1H0z"/></svg></div>
+                    <div class="titlebar-btn" title="最大化"><svg viewBox="0 0 10 10"><path d="M1 1v8h8V1H1zm1 1h6v6H2V2z"/></svg></div>
+                    <div class="titlebar-btn close" title="关闭"><svg viewBox="0 0 10 10"><path d="M1 0l4 4 4-4 1 1-4 4 4 4-1 1-4-4-4 4-1-1 4-4-4-4z"/></svg></div>
+                </div>
+            </div>
+            
+            <div class="ppt-ribbon">
+                <div class="ribbon-tabs">
+                    <div class="ribbon-tab file">文件</div>
+                    <div class="ribbon-tab active">开始</div>
+                    <div class="ribbon-tab">插入</div>
+                    <div class="ribbon-tab">设计</div>
+                    <div class="ribbon-tab">切换</div>
+                    <div class="ribbon-tab">动画</div>
+                    <div class="ribbon-tab">幻灯片放映</div>
+                    <div class="ribbon-tab">审阅</div>
+                    <div class="ribbon-tab">视图</div>
+                </div>
+                <div class="ribbon-content">
+                    <div class="ribbon-group">
+                        <div class="ribbon-btn ribbon-btn-large" title="新建幻灯片"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></div>
+                        <div class="ribbon-group-label">幻灯片</div>
+                    </div>
+                    <div class="ribbon-divider"></div>
+                    <div class="ribbon-group">
+                        <div class="ribbon-btn" title="复制"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></div>
+                        <div class="ribbon-btn" title="粘贴"><svg viewBox="0 0 24 24"><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div>
+                        <div class="ribbon-group-label">剪贴板</div>
+                    </div>
+                    <div class="ribbon-divider"></div>
+                    <div class="ribbon-group">
+                        <div class="ribbon-btn" title="文本框"><svg viewBox="0 0 24 24"><path d="M3 5h18v2H3V5zm0 6h18v2H3v-2zm0 6h12v2H3v-2z"/></svg></div>
+                        <div class="ribbon-btn" title="图片"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div>
+                        <div class="ribbon-group-label">插入</div>
+                    </div>
+                    <div class="ribbon-divider"></div>
+                    <div class="ribbon-group">
+                        <div class="ribbon-btn" title="从当前开始"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+                        <div class="ribbon-group-label">放映</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ppt-main">
+                <div class="slide-panel">
+                    <div class="slide-panel-header">幻灯片</div>
+                    <div class="slide-list" id="slideList"></div>
+                </div>
+                
+                <div class="editor-area">
+                    <div class="slide-editor">
+                        <div class="slide-canvas" id="slideCanvas">
+                            <div class="slide-content" id="slideContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ppt-statusbar">
+                <div class="status-section">
+                    <span class="status-item">幻灯片 1 / 6</span>
+                </div>
+                <div class="status-right">
+                    <div class="slide-indicator">
+                        <div class="slide-nav-btn" onclick="prevSlide()">◀</div>
+                        <span id="slideNum">1/6</span>
+                        <div class="slide-nav-btn" onclick="nextSlide()">▶</div>
+                    </div>
+                    <div class="zoom-control">
+                        <span>100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="taskbar">
+            <div class="start-button" title="开始"><svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg></div>
+            <div class="search-box" title="在此处输入以搜索"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5z"/></svg><span>在此处输入以搜索</span></div>
+            <div class="task-view-btn" title="任务视图"><svg viewBox="0 0 24 24"><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm8 14H6V6h5v13zm7 0h-5V6h5v13z"/></svg></div>
+            <div class="taskbar-apps">
+                <div class="taskbar-app running" id="pptTaskbar" onclick="focusPPT()" title="Microsoft PowerPoint">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2" fill="%23d24726"/><rect x="6" y="6" width="12" height="12" fill="white" rx="1"/><text x="12" y="15" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="%23d24726">P</text></svg>
+                </div>
+                <div class="taskbar-app" title="Microsoft Edge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%230078d4"/></svg></div>
+                <div class="taskbar-app" title="文件资源管理器"><svg viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg></div>
+            </div>
+            <div class="taskbar-right">
+                <div class="systray-icons">
+                    <div class="systray-icon" title="网络"><svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></div>
+                    <div class="systray-icon" title="音量"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg></div>
+                    <div class="systray-icon" title="电池"><svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg></div>
+                </div>
+                <div class="datetime" id="datetime">
+                    <span class="datetime-time" id="time">12:00</span>
+                    <span class="datetime-date" id="date">2024/1/1</span>
+                </div>
+                <div class="notification-btn" title="通知"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PPT幻灯片数据
+        const slides = [
+            {
+                title: "百度原生全模态大模型文心5.0介绍",
+                text: "文心5.0基础能力全面升级，在多模态理解、指令遵循、创意写作、事实性、智能体规划与工具应用等方面表现突出。",
+                image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop"
+            },
+            {
+                title: "核心能力升级",
+                text: "拥有强大的理解、逻辑、记忆和说服力。在40余项权威基准的综合评测中，其语言与多模态理解能力与 Gemini-2.5-Pro、GPT-5-High 等模型持平。",
+                image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=300&fit=crop"
+            },
+            {
+                title: "李彦宏：智能是最大的应用",
+                text: "大模型技术在快速迭代，其智能水平不断突破极限，模型思考时间变长，原生全模态统一，将自我学习和迭代，具备创新能力。",
+                image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=300&fit=crop"
+            },
+            {
+                title: "王海峰：原生全模态架构",
+                text: "文心5.0采用统一的自回归架构进行原生全模态建模，理解与生成一体化。从训练开始便融合语言、图像、视频、音频等多模态数据。",
+                image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=300&fit=crop"
+            },
+            {
+                title: "超稀疏混合专家架构",
+                text: "总参数规模超过2.4万亿，激活参数比例低于3%，在保持模型强大能力的同时有效提升推理效率。基于思维链和行动链的端到端多轮强化学习训练。",
+                image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?w=400&h=300&fit=crop"
+            },
+            {
+                title: "全球领先，中国第一",
+                text: "文心模型 ERNIE-5.0-Preview 在文本任务评测中位列全球并列第二、中国第一，尤其在创意写作、复杂问题理解等方面表现突出。",
+                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=300&fit=crop"
+            }
+        ];
+
+        let currentSlide = 0;
+        let isTyping = false;
+        let charIndex = 0;
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('time').textContent = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('date').textContent = now.getFullYear() + '/' + (now.getMonth() + 1).toString().padStart(2, '0') + '/' + now.getDate().toString().padStart(2, '0');
+        }
+
+        function renderSlideThumbs() {
+            const list = document.getElementById('slideList');
+            list.innerHTML = '';
+            slides.forEach((slide, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'slide-thumb' + (index === currentSlide ? ' active' : '');
+                thumb.onclick = () => goToSlide(index);
+                thumb.innerHTML = `
+                    <div class="slide-thumb-content">
+                        <div class="slide-thumb-title">${slide.title.substring(0, 15)}...</div>
+                        <div class="slide-thumb-text">${slide.text.substring(0, 30)}...</div>
+                        <div class="slide-thumb-image" style="background: url('${slide.image}') center/cover;"></div>
+                    </div>
+                `;
+                list.appendChild(thumb);
+            });
+        }
+
+        function renderSlide(index, withTyping = false) {
+            const slide = slides[index];
+            const canvas = document.getElementById('slideCanvas');
+            const content = document.getElementById('slideContent');
+            
+            canvas.classList.remove('transition');
+            void canvas.offsetWidth; // 触发重绘
+            canvas.classList.add('transition');
+            
+            if (withTyping) {
+                // 先渲染标题和图片，然后打字效果显示正文
+                content.innerHTML = `
+                    <div class="slide-title">${slide.title}</div>
+                    <div class="slide-body">
+                        <div class="slide-text" id="slideText"><span class="typing-cursor"></span></div>
+                        <div class="slide-image">
+                            <img src="${slide.image}" alt="配图" class="image-loading" onerror="this.parentElement.innerHTML='<div class=\\'slide-image-placeholder\\'><svg viewBox=\\'0 0 24 24\\'><path d=\\'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z\\'/></svg><span>图片加载中...</span></div>'">
+                        </div>
+                    </div>
+                `;
+                typeText(slide.text);
+            } else {
+                content.innerHTML = `
+                    <div class="slide-title">${slide.title}</div>
+                    <div class="slide-body">
+                        <div class="slide-text">${slide.text}</div>
+                        <div class="slide-image">
+                            <img src="${slide.image}" alt="配图" onerror="this.parentElement.innerHTML='<div class=\\'slide-image-placeholder\\'><svg viewBox=\\'0 0 24 24\\'><path d=\\'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z\\'/></svg><span>图片加载中...</span></div>'">
+                        </div>
+                    </div>
+                `;
+            }
+            
+            updateStatus();
+            renderSlideThumbs();
+        }
+
+        function typeText(text) {
+            isTyping = true;
+            charIndex = 0;
+            const textEl = document.getElementById('slideText');
+            
+            function type() {
+                if (charIndex < text.length) {
+                    textEl.innerHTML = text.substring(0, charIndex + 1) + '<span class="typing-cursor"></span>';
+                    charIndex++;
+                    setTimeout(type, Math.random() * 20 + 15);
+                } else {
+                    textEl.innerHTML = text;
+                    isTyping = false;
+                    // 打字完成后，等待一会再跳到下一页（无限循环）
+                    setTimeout(() => {
+                        nextSlide();
+                    }, 2000);
+                }
+            }
+            type();
+        }
+
+        function updateStatus() {
+            document.querySelector('.status-item').textContent = `幻灯片 ${currentSlide + 1} / ${slides.length}`;
+            document.getElementById('slideNum').textContent = `${currentSlide + 1}/${slides.length}`;
+        }
+
+        function goToSlide(index) {
+            if (isTyping) return;
+            currentSlide = index;
+            renderSlide(currentSlide, true);
+        }
+
+        function nextSlide() {
+            if (isTyping) return;
+            // 无限循环：到最后一页后回到第1页
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+            } else {
+                currentSlide = 0; // 回到第1页
+            }
+            renderSlide(currentSlide, true);
+        }
+
+        function prevSlide() {
+            if (isTyping) return;
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide, false);
+            }
+        }
+
+        function openPPT() {
+            document.getElementById('pptWindow').classList.add('show');
+            document.getElementById('pptTaskbar').classList.remove('running');
+            document.getElementById('pptTaskbar').classList.add('active');
+            
+            renderSlideThumbs();
+            setTimeout(() => {
+                renderSlide(0, true);
+            }, 500);
+        }
+
+        function focusPPT() {
+            if (!document.getElementById('pptWindow').classList.contains('show')) {
+                openPPT();
+            }
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+        window.onload = () => setTimeout(openPPT, 1200);
+    </script>
+</body>
+</html>
