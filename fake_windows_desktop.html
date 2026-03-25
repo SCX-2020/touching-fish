@@ -204,19 +204,26 @@
     let currentSlideIndex = 0;
     let isAnimating = false;
     let typingInterval = null;
+    let autoPlayTimer = null;
+    let autoPlayEnabled = true; // 是否启用自动播放
     
-    // 打字效果
+    // 打字效果 - 正确处理emoji
     function typeText(element, text, speed, callback) {
       if(typingInterval) clearInterval(typingInterval);
       element.innerHTML = '<span class="typing-cursor"></span>';
+      
+      // 使用扩展运算符正确分割字符串（包括emoji）
+      const chars = [...text];
       let i = 0;
       const cursor = element.querySelector('.typing-cursor');
+      
       typingInterval = setInterval(() => {
-        if(i < text.length) {
-          if(text[i] === '\n') {
+        if(i < chars.length) {
+          const char = chars[i];
+          if(char === '\n') {
             cursor.insertAdjacentHTML('beforebegin', '<br>');
           } else {
-            cursor.insertAdjacentText('beforebegin', text[i]);
+            cursor.insertAdjacentText('beforebegin', char);
           }
           i++;
         } else {
@@ -255,11 +262,15 @@
       
       panel.querySelectorAll('.slide-thumb').forEach(thumb => {
         thumb.addEventListener('click', () => {
-          if(!isAnimating) {
-            if(typingInterval) clearInterval(typingInterval);
-            currentSlideIndex = parseInt(thumb.dataset.idx);
-            playSlide(currentSlideIndex);
-          }
+          // 停止当前动画和定时器
+          if(typingInterval) clearInterval(typingInterval);
+          isAnimating = false;
+          
+          // 切换到点击的页面，并继续自动播放
+          const targetIndex = parseInt(thumb.dataset.idx);
+          currentSlideIndex = targetIndex;
+          autoPlayEnabled = true; // 保持自动播放
+          playSlide(currentSlideIndex);
         });
       });
     }
@@ -332,7 +343,9 @@
       }
       setTimeout(() => {
         isAnimating = false;
-        nextSlide();
+        if(autoPlayEnabled) {
+          nextSlide();
+        }
       }, 2000);
     }
     
@@ -344,6 +357,7 @@
     
     // 初始化
     createThumbnails();
+    autoPlayEnabled = true;
     playSlide(0);
   </script>
 </body>
